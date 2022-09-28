@@ -1,0 +1,5 @@
+raspistill -o xxx.png -e png
+
+#png,bmp,gif...
+# -vf -w xxxx -h xxxx
+# -t Xms

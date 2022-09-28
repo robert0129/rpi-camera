@@ -1,0 +1,6 @@
+raspivid -o xxx.h264
+
+# -o outfile
+# -w width
+# -h hight
+# -t X ms
