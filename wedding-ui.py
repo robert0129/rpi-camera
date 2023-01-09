@@ -12,12 +12,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys, cv2, time, os
 import numpy as np
 #import WiringPi as wiringpi
-#from subprocess import call
-#import pygame, sys
+from subprocess import call
+import pygame, sys
 #from pygame.locals import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+    
+        def getImage(img, width, height):
+            show = cv2.resize(img, (width, height))
+            show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
+            return QtGui.QImage(show.data, show.shape[1], show.shape[0], QtGui.QImage.Format_RGB888)
+    
         MainWindow.setObjectName("MainWindow")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -31,6 +37,10 @@ class Ui_MainWindow(object):
         self.timer_camera = QtCore.QTimer()
         self.takeFlag = 0
         self.seconds = 3
+        self.ImgFolder = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images"
+        self.bgPath = fr"C:\Users\chaol\Downloads\Project\rpi-camera\AI.JPG"
+        self.displaying = 0
+        
         
         LeftWidth = int(window_w * 0.7)
         LeftSize = QtCore.QRect(0, 0, LeftWidth, window_h)
@@ -38,7 +48,7 @@ class Ui_MainWindow(object):
         RightWidth = window_w - LeftWidth
         RightSize = QtCore.QRect(LeftWidth, 0, RightWidth, window_h)
         
-        ################## LEFT ##########################################
+        ################## LEFT ##########################################     
         self.LeftLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.LeftLayoutWidget.setGeometry(LeftSize)
         self.LeftLayoutWidget.setObjectName("LeftLayoutWidget")
@@ -50,12 +60,20 @@ class Ui_MainWindow(object):
         self.lblShowCam.setFixedSize(LeftWidth, window_h)
         self.lblShowCam.setAutoFillBackground(False)
         
+        #imgMale = cv2.imread(self.bgPath)
+        #self.lblShowCam.setPixmap(QtGui.QPixmap.fromImage(getImage(imgMale, int(LeftWidth/2), window_h)))
+        
         self.lblShowCap = QtWidgets.QLabel()
         self.lblShowCap.setFixedSize(LeftWidth, window_h)
         self.lblShowCap.setAutoFillBackground(False)
         
+        #imgFemale = cv2.imread(self.bgPath)
+        #self.lblShowCap.setPixmap(QtGui.QPixmap.fromImage(getImage(imgFemale, int(LeftWidth/2), window_h)))
+        
         self.LeftLayout.addWidget(self.lblShowCam)
         self.LeftLayout.addWidget(self.lblShowCap)
+        
+        self.LeftLayoutWidget.setStyleSheet("border:2px solid black;")
         
         ################## Right ##########################################
         self.RightLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -64,49 +82,117 @@ class Ui_MainWindow(object):
         self.RightLayout = QtWidgets.QHBoxLayout(self.RightLayoutWidget)
         self.RightLayout.setContentsMargins(0, 0, 0, 0)
         self.RightLayout.setObjectName("RightLayout")
-        
+
+        self.RightLayoutWidget.setStyleSheet("border:2px solid black;")
+
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.RightLayout.addLayout(self.verticalLayout)
               
+        # Camera & Snapshot
+        self.CapQGridLayout = QtWidgets.QGridLayout()
+        self.CapQGridLayout.setContentsMargins(0, 0, 0, 0)
+        self.CapQGridLayout.setObjectName("CapQGridLayout")        
+              
         self.SnapShopBtn = QtWidgets.QPushButton()
         self.SnapShopBtn.setObjectName("SnapShopBtn")
-        self.verticalLayout.addWidget(self.SnapShopBtn)
+        #self.verticalLayout.addWidget(self.SnapShopBtn)
+        self.CapQGridLayout.addWidget(self.SnapShopBtn, 0, 0, 1, 3)
+        self.SnapShopBtn.move(0, 0)
+        
+        #, QtCore.Qt.AlignTop
+        #self.CapQGridLayout.setAlignment(QtCore.AlignTop)
         
         self.CapBtn = QtWidgets.QPushButton()
         self.CapBtn.setObjectName("CapBtn")
-        self.verticalLayout.addWidget(self.CapBtn)
+        self.CapQGridLayout.addWidget(self.CapBtn, 1, 0, 1, 3)
+        #self.verticalLayout.addWidget(self.CapBtn)
+        self.verticalLayout.addLayout(self.CapQGridLayout)
+        self.SnapShopBtn.move(100, 0)
+        
+        self.SnapShopBtn.setMinimumHeight(100)
+        self.CapBtn.setMinimumHeight(100)
+        
+        # End of Camera & Snapshot
+        
+        # DisPlay
+        self.ImgQGridLayout = QtWidgets.QGridLayout()
+        self.ImgQGridLayout.setContentsMargins(0, 0, 0, 0)
+        self.ImgQGridLayout.setObjectName("ImgQGridLayout")
         
         self.DisPlayBtn = QtWidgets.QPushButton()
         self.DisPlayBtn.setObjectName("DisPlayBtn")
-        self.verticalLayout.addWidget(self.DisPlayBtn)
+        #self.verticalLayout.addWidget(self.DisPlayBtn)
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn, 0, 0, 1, 3)
+        
+        self.DisPlayBtn1 = QtWidgets.QPushButton()
+        self.DisPlayBtn1.setObjectName("DisPlayBtn1")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn1, 1, 0)
+        
+        self.DisPlayBtn2 = QtWidgets.QPushButton()
+        self.DisPlayBtn2.setObjectName("DisPlayBtn2")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn2, 1, 1)
+        
+        self.DisPlayBtn3 = QtWidgets.QPushButton()
+        self.DisPlayBtn3.setObjectName("DisPlayBtn3")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn3, 1, 2)
+        
+        self.DisPlayBtn10 = QtWidgets.QPushButton()
+        self.DisPlayBtn10.setObjectName("DisPlayBtn10")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn10, 2, 0)
+        
+        self.DisPlayBtn11 = QtWidgets.QPushButton()
+        self.DisPlayBtn11.setObjectName("DisPlayBtn11")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn11, 2, 1)
+        
+        self.DisPlayBtn12 = QtWidgets.QPushButton()
+        self.DisPlayBtn12.setObjectName("DisPlayBtn12")
+        self.ImgQGridLayout.addWidget(self.DisPlayBtn12, 2, 2)
+        
+        self.verticalLayout.addLayout(self.ImgQGridLayout)
+        self.DisPlayBtn.setMinimumHeight(100)
+        
+        # End of DisPlay
+        
+        # AI
+        
+        self.AIQGridLayout = QtWidgets.QGridLayout()
+        self.AIQGridLayout.setContentsMargins(0, 0, 0, 0)
+        self.AIQGridLayout.setObjectName("AIQGridLayout")
         
         self.AIPhotoBtn = QtWidgets.QPushButton()
         self.AIPhotoBtn.setObjectName("AIPhotoBtn")
-        self.verticalLayout.addWidget(self.AIPhotoBtn)
+        #self.verticalLayout.addWidget(self.AIPhotoBtn)
+        
+        self.AIQGridLayout.addWidget(self.AIPhotoBtn, 0, 0, 1, 3)
+        
+        self.verticalLayout.addLayout(self.AIQGridLayout)
+        self.AIPhotoBtn.setMinimumHeight(100)
+        # End of AI
+        
+        
         
         fontx = QtGui.QFont()
         fontx.setFamily("kaiti")
         fontx.setPointSize(16)
         
         # Button Style
-        btnArrays = [self.AIPhotoBtn, self.SnapShopBtn, self.DisPlayBtn, self.CapBtn]
+        btnArrays = [self.AIPhotoBtn, self.SnapShopBtn, self.DisPlayBtn, self.CapBtn, self.DisPlayBtn1, self.DisPlayBtn2, self.DisPlayBtn3, self.DisPlayBtn10, self.DisPlayBtn11, self.DisPlayBtn12]
+        
         btnStyle = '''
-            QAIPhotoBtn{color:black}
-            QAIPhotoBtn:hover{color:red}
-            QAIPhotoBtn{background-color:rgb(78,255,255)}
-            QAIPhotoBtn{border:2px}
-            QAIPhotoBtn{border-radius:10px}
-            QAIPhotoBtn{padding:2px 4px}
+            QPushButton{color:black}
+            QPushButton:hover{color:red}
+            QPushButton{background-color:rgb(78,255,255)}
+            QPushButton{border:2px solid black;}
+            QPushButton{border-radius:10px}
+            QPushButton{padding:2px 4px}
         '''
         for i in range(len(btnArrays)):
             btnArrays[i].setFont(fontx)
             btnArrays[i].setStyleSheet(btnStyle)
         
-        self.AIPhotoBtn.setMinimumHeight(50)
-        self.SnapShopBtn.setMinimumHeight(50)
-        self.CapBtn.setMinimumHeight(50)
-        self.DisPlayBtn.setMinimumHeight(50)
+        
+        
         
         self.btnGroup = QtWidgets.QButtonGroup(MainWindow)
         self.btnGroup.addButton(self.AIPhotoBtn, 1)
@@ -125,14 +211,29 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # '''
+        # Setting background Picture
+        #palette1 = QtGui.QPalette()
+        #palette1.setBrush(palette1.Background(), QtGui.QBrush(QPixmap('AI.jpg')))
+        #self.setPalette(palette1)
+        # '''
         
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "WeddingShow"))
-        self.SnapShopBtn.setText(_translate("MainWindow", "SnapShot"))
+        self.SnapShopBtn.setText(_translate("MainWindow", "Enable Camera"))
         self.CapBtn.setText(_translate("MainWindow", "Capture"))
         self.DisPlayBtn.setText(_translate("MainWindow", "DisPlay"))
+        
+        self.DisPlayBtn1.setText(_translate("MainWindow", "ChungYuan"))
+        self.DisPlayBtn2.setText(_translate("MainWindow", "Eighth"))
+        self.DisPlayBtn3.setText(_translate("MainWindow", "Register"))
+        self.DisPlayBtn10.setText(_translate("MainWindow", "Cheese"))
+        self.DisPlayBtn11.setText(_translate("MainWindow", "Tracy"))
+        self.DisPlayBtn12.setText(_translate("MainWindow", "Today"))
+        
         self.AIPhotoBtn.setText(_translate("MainWindow", "AIPhoto"))
 
     def setupEvent(self, MainWindow):
@@ -152,17 +253,63 @@ class Ui_MainWindow(object):
                                                     defaultButton = QtWidgets.QMessageBox.Ok)
             else:
                 self.timer_camera.start(30)
+                self.SnapShopBtn.setText("Close Camera")
 
                 #self.button_open_camera.setText(u'closed camera')
         else:
             self.timer_camera.stop()
             self.cap.release()
             self.lblShowCam.clear()
+            self.SnapShopBtn.setText("Enable Camera")
             #self.button_open_camera.setText(u'open camera')
         
-    def DisPlayEventTrigger(object):
+    def DisPlayEventTrigger(self):
+        if self.displaying > 0:
+            print("Displyaing")
+            return
         print("DisPlayEventTrigger");
+        self.displaying = 1
+        self.SnapShopBtn.setEnabled(False)
+        self.CapBtn.setEnabled(False)
+        self.AIPhotoBtn.setEnabled(False)
+        self.DisPlayBtn.setText("Displaying...")
+        self.timer_camera.stop()
+        self.cap.release()
+        self.lblShowCam.clear()
+        self.lblShowCap.clear()
         
+        onlyfiles = [os.path.join(self.ImgFolder, f) for f in os.listdir(self.ImgFolder) if os.path.isfile(os.path.join(self.ImgFolder, f))]
+
+        self.lblShowCap.setVisible(True)
+        cnt = 0
+        fcnt = len(onlyfiles)
+        start = time.time()
+        time.process_time()
+        elapsed = 0
+        while cnt < fcnt :
+            elapsed = time.time() - start
+            elapsed_time = int(time.time() - start)
+            img = cv2.imread(onlyfiles[cnt])
+            if elapsed_time > 2 :
+                cnt = cnt + 1
+                start = time.time()
+            show = cv2.resize(img, (self.LeftLayoutWidget.width(), self.LeftLayoutWidget.height()))
+            show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
+            self.showImage = QtGui.QImage(show.data, show.shape[1], show.shape[0], QtGui.QImage.Format_RGB888)
+            self.lblShowCap.setPixmap(QtGui.QPixmap.fromImage(self.showImage))
+            self.lblShowCap.setGeometry(0, 0, self.LeftLayoutWidget.width(), self.LeftLayoutWidget.height())
+            cv2.waitKey(1)
+
+        print("End of DisPlaying")
+        #self.lblShowCap.setVisible(False)    
+        self.lblShowCam.clear()
+        self.lblShowCap.clear()
+        self.displaying = 0
+        self.SnapShopBtn.setEnabled(True)
+        self.CapBtn.setEnabled(True)
+        self.AIPhotoBtn.setEnabled(True)
+        self.DisPlayBtn.setText("Display")
+        self.lblShowCap.setVisible(False)
         
         
     def AIPhotoEventTrigger(self):
@@ -201,13 +348,20 @@ class Ui_MainWindow(object):
         self.takeFlag = 0
         
     def capx(self):
-        FName = fr"images\cap{time.strftime('%Y%m%d%H%M%S', time.localtime())}"
+        if self.timer_camera.isActive() == False:
+            return
+        if self.takeFlag == 1 :
+            return
+        self.CapBtn.setEnabled(False)
         self.CountDown(self)
+        #FName = fr"images\cap{time.strftime('%Y%m%d%H%M%S', time.localtime())}"
+        FName = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images\{time.strftime('%Y%m%d%H%M%S', time.localtime())}"
+        self.lblShowCam.setVisible(False)
         cv2.imwrite(FName + ".jpg", self.image)
+        self.lblShowCap.setVisible(True)
         self.takeFlag = 1
+        
         flag, self.image = self.cap.read()
-        print(self.LeftLayoutWidget.width())
-        print(self.LeftLayoutWidget.height())
         cv2.putText(self.image, str("Wedding Day"), (0, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
         show = cv2.resize(self.image, (self.LeftLayoutWidget.width(), self.LeftLayoutWidget.height()))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
@@ -217,9 +371,13 @@ class Ui_MainWindow(object):
         self.lblShowCap.setPixmap(QtGui.QPixmap.fromImage(self.showImage))
         self.lblShowCap.setGeometry(0, 0, self.LeftLayoutWidget.width(), self.LeftLayoutWidget.height())
         self.showImage.save(FName + ".jpg", "JPG", 100)
+        self.lblShowCap.setVisible(True)
         time.sleep(5)
-        self.lblShowCap.setVisible(False)
         self.takeFlag = 0
+        self.CapBtn.setEnabled(True)
+        self.lblShowCam.setVisible(True)
+        self.lblShowCap.setVisible(False)
+        self.lblShowCap.clear()
         
 if __name__ == "__main__":
     import sys
