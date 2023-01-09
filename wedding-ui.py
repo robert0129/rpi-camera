@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
         window_w, window_h = sizeObject.width(), sizeObject.height()
         MainWindow.resize(window_w, window_h)
+        
         self.CAM_NUM = 0
         self.cap = cv2.VideoCapture()
         self.timer_camera = QtCore.QTimer()
@@ -79,9 +80,16 @@ class Ui_MainWindow(object):
         self.RightLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.RightLayoutWidget.setGeometry(RightSize)
         self.RightLayoutWidget.setObjectName("RightLayoutWidget")
+  
+        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox.setGeometry(RightSize)
+        self.groupBox.setObjectName("groupBox")
+  
         self.RightLayout = QtWidgets.QHBoxLayout(self.RightLayoutWidget)
         self.RightLayout.setContentsMargins(0, 0, 0, 0)
         self.RightLayout.setObjectName("RightLayout")
+        
+
 
         self.RightLayoutWidget.setStyleSheet("border:2px solid black;")
 
@@ -98,7 +106,7 @@ class Ui_MainWindow(object):
         self.SnapShopBtn.setObjectName("SnapShopBtn")
         #self.verticalLayout.addWidget(self.SnapShopBtn)
         self.CapQGridLayout.addWidget(self.SnapShopBtn, 0, 0, 1, 3)
-        self.SnapShopBtn.move(0, 0)
+        
         
         #, QtCore.Qt.AlignTop
         #self.CapQGridLayout.setAlignment(QtCore.AlignTop)
@@ -108,7 +116,7 @@ class Ui_MainWindow(object):
         self.CapQGridLayout.addWidget(self.CapBtn, 1, 0, 1, 3)
         #self.verticalLayout.addWidget(self.CapBtn)
         self.verticalLayout.addLayout(self.CapQGridLayout)
-        self.SnapShopBtn.move(100, 0)
+        
         
         self.SnapShopBtn.setMinimumHeight(100)
         self.CapBtn.setMinimumHeight(100)
