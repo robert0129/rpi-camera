@@ -10,8 +10,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from AIPhoto import AIPhoto as AI 
-from DisplayPhoto import DisplayPhoto as DP 
+from DisplayPhoto import DisplayPhoto as DP
 from SnapShotPhoto import SnapShotPhoto as SSP
+from WEDUI import WEDUI as WUI
 import sys, cv2, time, os
 import numpy as np
 
@@ -39,6 +40,9 @@ class Ui_MainWindow(object):
         self.RightSize = QtCore.QRect(LeftWidth, 0, RightWidth, window_h)        
         # End of QWidget Size
         
+        WUI.UIObj["LFRAME"] = self.LeftSize
+        WUI.UIObj["RFRAME"] = self.RightSize
+        
         # Left
         self.LeftgroupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.LeftgroupBox.setGeometry(self.LeftSize)
@@ -63,6 +67,8 @@ class Ui_MainWindow(object):
         self.gridLayout_6.addWidget(self.lblShowCam)
         self.gridLayout_6.addWidget(self.lblShowCap)
         
+        WUI.UIObj["lblShowCam"] = self.lblShowCam
+        WUI.UIObj["lblShowCap"] = self.lblShowCap
         # End of Left
         
         # Right
@@ -89,6 +95,9 @@ class Ui_MainWindow(object):
         
         self.btnCap.setMinimumHeight(100)
         self.btnCamera.setMinimumHeight(100)
+        
+        WUI.UIObj["btnCap"] = self.btnCap
+        WUI.UIObj["btnCamera"] = self.btnCamera
         
         ####################################################################
         
@@ -186,9 +195,10 @@ class Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "AI 照相"))
 
     def setupEvent(self, MainWindow):
-        self.btnCamera.clicked.connect(lambda:SSP.EventTrigger(self.CAM_NUM, self.CAP, self.timeCam, cv2))
-        self.btnCap.clicked.connect(lambda:SSP.TakePictures(self.timeCam, self.takeFlag, self.CAP,cv2, self.LeftSize.width(), self.LeftSize.height(), self.seconds, self.lblShowCam, self.lblShowCap))
-        self.timeCam.timeout.connect(lambda:SSP.ShowCamera(self.CAP, cv2, self.LeftSize.width(), self.LeftSize.height(), self.lblShowCam))
+        self.btnCamera.clicked.connect(lambda:SSP.EventTrigger())
+        self.btnCap.clicked.connect(lambda:SSP.TakePictures())
+        print(str(self.LeftSize.width())+","+str(self.LeftSize.height()))
+        WUI.UIObj["TIMECAM"].timeout.connect(lambda:SSP.ShowCamera())
         self.pushButton_3.clicked.connect(DP.EventTrigger)
         self.pushButton_10.clicked.connect(AI.EventTrigger)
 
