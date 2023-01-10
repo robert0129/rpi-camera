@@ -10,12 +10,13 @@ UIObj["CV"] = cv
 UIObj["CAP"] = cv.VideoCapture(UIObj["CAM_NUM"])
 UIObj["TIMECAM"] = QtCore.QTimer()
 UIObj["SNAPFLAG"] = 0
+UIObj["DISPLAYFLAG"] = 0
 UIObj["SECONDS"] = 3
-UIObj["lblGroup"] = dict()
-UIObj["btnSSPGroup"] = dict()
-UIObj["btnDPGroup"] = dict()
-UIObj["btnAIPGroup"] = dict()
-UIObj["CAMERA"]= dict()
+#UIObj["lblGroup"] = dict()
+#UIObj["btnSSPGroup"] = dict()
+#UIObj["btnDPGroup"] = dict()
+#UIObj["btnAIPGroup"] = dict()
+#UIObj["CAMERA"]= dict()
 
 
 

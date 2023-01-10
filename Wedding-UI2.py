@@ -109,45 +109,68 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_4.setObjectName("gridLayout_4")
         
-        self.pushButton_3 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout_4.addWidget(self.pushButton_3, 0, 0, 1, 3)
+        self.btnDisplay = QtWidgets.QPushButton(self.gridLayoutWidget_2)
+        self.btnDisplay.setObjectName("btnDisplay")
+        self.gridLayout_4.addWidget(self.btnDisplay, 0, 0, 1, 3)
         
-        self.pushButton_4 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.gridLayout_4.addWidget(self.pushButton_4, 1, 0, 1, 1)
+        self.btnCYCU = QtWidgets.QRadioButton('中原', self.gridLayoutWidget_2)
+        #layout.addWidget(self.myradiobutton1, 0, 0)
         
-        self.pushButton_5 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.gridLayout_4.addWidget(self.pushButton_5, 1, 1, 1, 1)
+        #self.pushButton_4 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
+        #self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout_4.addWidget(self.btnCYCU, 1, 0, 1, 1)
         
-        self.pushButton_6 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_6.setObjectName("pushButton_6")
-        self.gridLayout_4.addWidget(self.pushButton_6, 1, 2, 1, 1)
+        self.btnETH = QtWidgets.QRadioButton("八分之一", self.gridLayoutWidget_2)
+        #self.pushButton_5.setObjectName("pushButton_5")
+        self.gridLayout_4.addWidget(self.btnETH, 1, 1, 1, 1)
         
-        ###################################################################
-        
-        self.pushButton_7 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.gridLayout_4.addWidget(self.pushButton_7, 2, 0, 1, 1)
-        
-        self.pushButton_8 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_8.setObjectName("pushButton_8")
-        self.gridLayout_4.addWidget(self.pushButton_8, 2, 1, 1, 1)
-        
-        self.pushButton_9 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_9.setObjectName("pushButton_9")
-        self.gridLayout_4.addWidget(self.pushButton_9, 2, 2, 1, 1)
+        self.btnREG = QtWidgets.QRadioButton("登記", self.gridLayoutWidget_2)
+        #self.pushButton_6.setObjectName("pushButton_6")
+        self.gridLayout_4.addWidget(self.btnREG, 1, 2, 1, 1)
         
         ###################################################################
         
-        self.pushButton_3.setMinimumHeight(100)
-        self.pushButton_4.setMinimumHeight(50)
-        self.pushButton_5.setMinimumHeight(50)
-        self.pushButton_6.setMinimumHeight(50)
-        self.pushButton_7.setMinimumHeight(50)
-        self.pushButton_8.setMinimumHeight(50)
-        self.pushButton_9.setMinimumHeight(50)
+        self.btnTRACY = QtWidgets.QRadioButton("雀囍", self.gridLayoutWidget_2)
+        #self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout_4.addWidget(self.btnTRACY, 2, 0, 1, 1)
+        
+        self.btnCHEESES = QtWidgets.QRadioButton("Cheeses", self.gridLayoutWidget_2)
+        #self.pushButton_8.setObjectName("pushButton_8")
+        self.gridLayout_4.addWidget(self.btnCHEESES, 2, 1, 1, 1)
+        
+        self.btnLIVE = QtWidgets.QRadioButton("現場", self.gridLayoutWidget_2)
+        #self.pushButton_9.setObjectName("pushButton_9")
+        self.gridLayout_4.addWidget(self.btnLIVE, 2, 2, 1, 1)
+        
+        self.btnGroup = QtWidgets.QButtonGroup(self.gridLayoutWidget_2)
+        self.btnGroup.addButton(self.btnCYCU, 1)
+        self.btnGroup.addButton(self.btnETH, 2)
+        self.btnGroup.addButton(self.btnREG, 3)
+        self.btnGroup.addButton(self.btnTRACY, 4)
+        self.btnGroup.addButton(self.btnCHEESES, 5)
+        self.btnGroup.addButton(self.btnLIVE, 6)
+        self.btnLIVE.setChecked(True)
+        folder = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images\Live"
+        WUI.UIObj["IMGFOLDER"] = folder
+        WUI.UIObj["btnGroup"] = self.btnGroup
+        DPdict = dict()
+        DPdict["CYCU"] = self.btnCYCU
+        DPdict["ETH"] = self.btnETH
+        DPdict["REG"] = self.btnREG
+        DPdict["TRACY"] = self.btnTRACY
+        DPdict["CHEESES"] = self.btnCHEESES
+        DPdict["LIVE"] = self.btnLIVE
+        WUI.UIObj["DPRDIOGroup"] = DPdict
+        
+        ###################################################################
+        
+        self.btnDisplay.setMinimumHeight(100)
+        self.btnCYCU.setMinimumHeight(50)
+        self.btnETH.setMinimumHeight(50)
+        self.btnREG.setMinimumHeight(50)
+        self.btnTRACY.setMinimumHeight(50)
+        self.btnCHEESES.setMinimumHeight(50)
+        self.btnLIVE.setMinimumHeight(50)
         
         ###################################################################
         
@@ -159,11 +182,12 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_5.setObjectName("gridLayout_5")
         
-        self.pushButton_10 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
-        self.pushButton_10.setObjectName("pushButton_10")
-        self.gridLayout_5.addWidget(self.pushButton_10, 0, 0, 1, 1)
+        self.btnAI = QtWidgets.QPushButton(self.gridLayoutWidget_3)
+        self.btnAI.setObjectName("btnAI")
+        self.gridLayout_5.addWidget(self.btnAI, 0, 0, 1, 1)
         
-        self.pushButton_10.setMinimumHeight(100)
+        self.btnAI.setMinimumHeight(100)
+        WUI.UIObj["btnAI"] = self.btnAI
         # End of Right
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -185,22 +209,23 @@ class Ui_MainWindow(object):
         self.RightgroupBox.setTitle(_translate("MainWindow", "功能"))
         self.btnCamera.setText(_translate("MainWindow", "開啟相機"))
         self.btnCap.setText(_translate("MainWindow", "拍照"))
-        self.pushButton_3.setText(_translate("MainWindow", "播放"))
-        self.pushButton_4.setText(_translate("MainWindow", "中原"))
-        self.pushButton_5.setText(_translate("MainWindow", "八分之一"))
-        self.pushButton_6.setText(_translate("MainWindow", "登記"))
-        self.pushButton_7.setText(_translate("MainWindow", "雀囍"))
-        self.pushButton_8.setText(_translate("MainWindow", "Cheeses"))
-        self.pushButton_9.setText(_translate("MainWindow", "Live"))
-        self.pushButton_10.setText(_translate("MainWindow", "AI 照相"))
+        self.btnDisplay.setText(_translate("MainWindow", "播放"))
+        #self.pushButton_4.setText(_translate("MainWindow", "中原"))
+        #self.pushButton_5.setText(_translate("MainWindow", "八分之一"))
+        #self.pushButton_6.setText(_translate("MainWindow", "登記"))
+        #self.pushButton_7.setText(_translate("MainWindow", "雀囍"))
+        #self.pushButton_8.setText(_translate("MainWindow", "Cheeses"))
+        #self.pushButton_9.setText(_translate("MainWindow", "Live"))
+        self.btnAI.setText(_translate("MainWindow", "AI 照相"))
 
     def setupEvent(self, MainWindow):
         self.btnCamera.clicked.connect(lambda:SSP.EventTrigger())
         self.btnCap.clicked.connect(lambda:SSP.TakePictures())
-        print(str(self.LeftSize.width())+","+str(self.LeftSize.height()))
         WUI.UIObj["TIMECAM"].timeout.connect(lambda:SSP.ShowCamera())
-        self.pushButton_3.clicked.connect(DP.EventTrigger)
-        self.pushButton_10.clicked.connect(AI.EventTrigger)
+        self.btnDisplay.clicked.connect(lambda:DP.EventTrigger())
+        self.btnGroup.buttonClicked.connect(lambda:DP.Selected())
+        self.btnAI.clicked.connect(AI.EventTrigger)
+        
 
 if __name__ == "__main__":
     import sys
