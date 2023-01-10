@@ -12,6 +12,7 @@ UIObj["TIMECAM"] = QtCore.QTimer()
 UIObj["SNAPFLAG"] = 0
 UIObj["DISPLAYFLAG"] = 0
 UIObj["SECONDS"] = 3
+UIObj["DFAULTFOLDER"] = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images\Live"
 #UIObj["lblGroup"] = dict()
 #UIObj["btnSSPGroup"] = dict()
 #UIObj["btnDPGroup"] = dict()

@@ -23,11 +23,11 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         
-        self.CAM_NUM = 0
-        self.CAP = cv2.VideoCapture()
-        self.timeCam = QtCore.QTimer()
-        self.takeFlag = 0
-        self.seconds = 3
+        #self.CAM_NUM = 0
+        #self.CAP = cv2.VideoCapture()
+        #self.timeCam = QtCore.QTimer()
+        #self.takeFlag = 0
+        #self.seconds = 3
         
         # Set QWidget Size
         sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
@@ -131,15 +131,12 @@ class Ui_MainWindow(object):
         ###################################################################
         
         self.btnTRACY = QtWidgets.QRadioButton("雀囍", self.gridLayoutWidget_2)
-        #self.pushButton_7.setObjectName("pushButton_7")
         self.gridLayout_4.addWidget(self.btnTRACY, 2, 0, 1, 1)
         
         self.btnCHEESES = QtWidgets.QRadioButton("Cheeses", self.gridLayoutWidget_2)
-        #self.pushButton_8.setObjectName("pushButton_8")
         self.gridLayout_4.addWidget(self.btnCHEESES, 2, 1, 1, 1)
         
         self.btnLIVE = QtWidgets.QRadioButton("現場", self.gridLayoutWidget_2)
-        #self.pushButton_9.setObjectName("pushButton_9")
         self.gridLayout_4.addWidget(self.btnLIVE, 2, 2, 1, 1)
         
         self.btnGroup = QtWidgets.QButtonGroup(self.gridLayoutWidget_2)
@@ -210,12 +207,6 @@ class Ui_MainWindow(object):
         self.btnCamera.setText(_translate("MainWindow", "開啟相機"))
         self.btnCap.setText(_translate("MainWindow", "拍照"))
         self.btnDisplay.setText(_translate("MainWindow", "播放"))
-        #self.pushButton_4.setText(_translate("MainWindow", "中原"))
-        #self.pushButton_5.setText(_translate("MainWindow", "八分之一"))
-        #self.pushButton_6.setText(_translate("MainWindow", "登記"))
-        #self.pushButton_7.setText(_translate("MainWindow", "雀囍"))
-        #self.pushButton_8.setText(_translate("MainWindow", "Cheeses"))
-        #self.pushButton_9.setText(_translate("MainWindow", "Live"))
         self.btnAI.setText(_translate("MainWindow", "AI 照相"))
 
     def setupEvent(self, MainWindow):
@@ -224,8 +215,7 @@ class Ui_MainWindow(object):
         WUI.UIObj["TIMECAM"].timeout.connect(lambda:SSP.ShowCamera())
         self.btnDisplay.clicked.connect(lambda:DP.EventTrigger())
         self.btnGroup.buttonClicked.connect(lambda:DP.Selected())
-        self.btnAI.clicked.connect(AI.EventTrigger)
-        
+        self.btnAI.clicked.connect(lambda:AI.EventTrigger())
 
 if __name__ == "__main__":
     import sys

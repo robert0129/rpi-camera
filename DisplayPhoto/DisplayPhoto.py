@@ -24,7 +24,6 @@ def UpdateUI(status):
             d.setEnabled(True)
             
 def EventTrigger():
-    print("Display Photo")
     dflag = WUI.UIObj["DISPLAYFLAG"]
     cv = WUI.UIObj["CV"]
     cam_num = WUI.UIObj["CAM_NUM"]
@@ -74,3 +73,5 @@ def Selected():
     else:
         folder = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images\Live"
     WUI.UIObj["IMGFOLDER"] = folder
+    
+    

@@ -10,7 +10,6 @@ def EventTrigger():
     cam_num = WUI.UIObj["CAM_NUM"]
     cap = WUI.UIObj["CAP"]
     lblShowCam = WUI.UIObj["lblShowCam"]
-    
     if timecam.isActive() == False:
             flag = cap.open(cam_num, cv.CAP_DSHOW)
             if flag == False:
@@ -21,7 +20,6 @@ def EventTrigger():
         timecam.stop()
         cap.release()
         lblShowCam.clear()
-        #self.SnapShopBtn.setText("Enable Camera")
 
 def ShowCamera():
     cv = WUI.UIObj["CV"]
@@ -50,14 +48,11 @@ def TakePictures():
     width = WUI.UIObj["LFRAME"].width()
     height = WUI.UIObj["LFRAME"].height()
     snapflag = WUI.UIObj["SNAPFLAG"]
-    seconds = WUI.UIObj["SECONDS"]
-    
+    seconds = WUI.UIObj["SECONDS"]   
     btnCap = WUI.UIObj["btnCap"]
     btnCamera = WUI.UIObj["btnCamera"]
-    
     lblShowCam = WUI.UIObj["lblShowCam"]
-    lblShowCap = WUI.UIObj["lblShowCap"]
-    
+    lblShowCap = WUI.UIObj["lblShowCap"]    
     if timecam.isActive() == False:
         return
     if snapflag == 1 :
@@ -67,8 +62,7 @@ def TakePictures():
     btnCamera.setEnabled(False)
     lblShowCap.clear()
     CountDown(cv, seconds, cap, width, height, lblShowCam)
-    #FName = fr"images\cap{time.strftime('%Y%m%d%H%M%S', time.localtime())}"
-    FName = fr"C:\Users\chaol\Downloads\Project\rpi-camera\images\{time.strftime('%Y%m%d%H%M%S', time.localtime())}"
+    FName = WUI.UIObj["DFAULTFOLDER"]+"\\"+str(time.strftime('%Y%m%d%H%M%S', time.localtime()))
     lblShowCap.setVisible(True)
     flag, image = cap.read()
     if flag == False:
@@ -77,7 +71,6 @@ def TakePictures():
     show = cv.resize(image, (width, height))
     show = cv.cvtColor(show, cv.COLOR_BGR2RGB)
     showImage = QtGui.QImage(show.data, show.shape[1], show.shape[0], QtGui.QImage.Format_RGB888)
-    #lblShowCam.setPixmap(QtGui.QPixmap.fromImage(showImage))
     lblShowCap.setPixmap(QtGui.QPixmap.fromImage(showImage))
     lblShowCap.setGeometry(0, 0, width, height)
     cv.waitKey(1)
